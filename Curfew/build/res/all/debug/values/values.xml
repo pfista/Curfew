@@ -2,13 +2,48 @@
 <resources>
 
     <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/dimens.xml -->
+    <eat-comment />
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings_activity_login.xml -->
+    <eat-comment />
+
+    <string name="action_forgot_password">Recover lost password</string>
     <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings.xml -->
+    <eat-comment />
+
     <string name="action_settings">Settings</string>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings_activity_login.xml -->
+    <eat-comment />
+
+    <string name="action_sign_in_register"><b>Sign in</b> or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings.xml -->
+    <eat-comment />
+
     <string name="app_name">Curfew</string>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings_activity_login.xml -->
+    <eat-comment />
+
+    <string name="error_field_required">This field is required</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings.xml -->
+    <eat-comment />
+
     <string name="hello_world">Hello world!</string>
+    <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings_activity_login.xml -->
+    <eat-comment />
+
+    <string name="login_progress_signing_in">Signing in…</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="title_activity_login">Sign in</string>
     <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/styles.xml -->
+    <eat-comment />
+
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -19,6 +54,12 @@
 
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="LoginFormContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
     </style>
 
 </resources>
