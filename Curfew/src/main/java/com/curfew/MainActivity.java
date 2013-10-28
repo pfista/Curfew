@@ -3,6 +3,7 @@ package com.curfew;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -10,6 +11,7 @@ import com.parse.ParseObject;
 
 public class MainActivity extends Activity {
 
+    private TextView mUserNameTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,10 @@ public class MainActivity extends Activity {
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
         testObject.saveInBackground();
+
+        //Get username textview
+        mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
+        mUserNameTextView.
     }
 
 
