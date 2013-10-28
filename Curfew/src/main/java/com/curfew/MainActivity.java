@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
         //Get username textview
         mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
-        mUserNameTextView.
+//        mUserNameTextView
     }
 
 

@@ -33,6 +33,7 @@
     <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings.xml -->
     <eat-comment />
 
+    <string name="hello">Hello, </string>
     <string name="hello_world">Hello world!</string>
     <!-- From: file:/Users/Rohan/AndroidStudioProjects/CurfewProject/Curfew/src/main/res/values/strings_activity_login.xml -->
     <eat-comment />
