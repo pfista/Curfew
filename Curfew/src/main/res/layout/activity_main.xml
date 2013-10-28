@@ -23,4 +23,30 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView2" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:text="@string/setcurfew" />
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Curfew"
+        android:id="@+id/textView"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText" />
+
+
 </RelativeLayout>

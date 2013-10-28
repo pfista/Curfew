@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 public class MainActivity extends Activity {
 
@@ -19,13 +19,17 @@ public class MainActivity extends Activity {
         Parse.initialize(this, "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs", "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI");
         ParseAnalytics.trackAppOpened(getIntent());
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
 
         //Get username textview
         mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
-//        mUserNameTextView
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null)
+            mUserNameTextView.setText(currentUser.getUsername());
+        else{
+            //do nothing for now
+        }
+
+//        currentUser.
     }
 
 
