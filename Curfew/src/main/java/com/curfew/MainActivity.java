@@ -12,6 +12,7 @@ import com.parse.ParseUser;
 public class MainActivity extends Activity {
 
     private TextView mUserNameTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +24,9 @@ public class MainActivity extends Activity {
         //Get username textview
         mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if(currentUser != null)
+        if (currentUser != null)
             mUserNameTextView.setText(currentUser.getUsername());
-        else{
+        else {
             //do nothing for now
         }
 
@@ -39,5 +40,5 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
 }
