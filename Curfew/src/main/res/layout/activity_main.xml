@@ -48,5 +48,14 @@
         android:layout_below="@+id/editText"
         android:layout_alignLeft="@+id/editText" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Curfew"
+        android:id="@+id/setCurfewButton"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="14dp" />
+
 
 </RelativeLayout>
