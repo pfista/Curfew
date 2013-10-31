@@ -31,7 +31,7 @@
         android:id="@+id/editText"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
-        android:text="@string/setcurfew" />
+        android:text="@string/set_curfew" />
 
     <TimePicker
         android:layout_width="wrap_content"
