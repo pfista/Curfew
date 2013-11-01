@@ -47,6 +47,28 @@ public class MainActivity extends Activity {
         mCurfewAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.curfewtextview, mToUserList);
         mCurfewListView.setAdapter(mCurfewAdapter);
+
+        //Get username textview
+        mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null)
+            mUserNameTextView.setText(currentUser.getUsername());
+        else{
+            //do nothing for now
+        }
+        findViewById(R.id.setCurfewButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSetCurfewTextView = (TextView) findViewById(R.id.editText);
+                timePicker = (TimePicker) findViewById(R.id.timePicker);
+                createCurfew();
+            }
+        });
+
+
+
+
     }
 
     @Override
