@@ -11,6 +11,11 @@
 
     <string name="action_forgot_password">Recover lost password</string>
 
+    <string name="error_login">Incorrect username/password</string>
+    <string name="error_register_user_taken">That username is taken</string>
+    <string name="error_register">Unable to register</string>
+
+
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="login_progress_register">Registering&#8230;</string>
 

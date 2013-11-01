@@ -115,8 +115,9 @@ public class LoginActivity extends Activity {
                     finish();
                 } else {
                     Log.e(TAG, "Login failed" + e.toString());
-                    // TODO: handle errors with mPasswordView.setError(getString(R.string.error_invalid_password)) etc
-                    // TODO: Signup failed. Look at the ParseException to see what happened.
+                    mPasswordView.setError(getString(R.string.error_login));
+                    showProgress(false);
+                    mPasswordView.requestFocus();
                 }
             }
         });
@@ -124,7 +125,6 @@ public class LoginActivity extends Activity {
 
 
     public void attemptRegister() {
-
         // Store values at the time of the login attempt.
         mUser = mEmailView.getText().toString();
         mPassword = mPasswordView.getText().toString();
@@ -147,9 +147,14 @@ public class LoginActivity extends Activity {
                     finish();
                 } else {
                     Log.e(TAG, "error signing up" + e.toString());
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
-                    // TODO: handle errors with mPasswordView.setError(getString(R.string.error_invalid_password)) etc
+                    if (e.getCode() == ParseException.USERNAME_TAKEN){
+                        mEmailView.setError(getString(R.string.error_register_user_taken));
+                    }
+                    else {
+                        mPasswordView.setError(getString(R.string.error_register));
+                    }
+                    showProgress(false);
+                    mLoginStatusMessageView.requestFocus();
                 }
             }
         });
