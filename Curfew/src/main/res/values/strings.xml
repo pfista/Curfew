@@ -7,5 +7,6 @@
     <string name="hello">Hello, </string>
     <string name="set_curfew">Type username</string>
     <string name="error_incorrect_password">Password not recognized</string>
+    <string name="logout">Logout</string>
 
 </resources>
