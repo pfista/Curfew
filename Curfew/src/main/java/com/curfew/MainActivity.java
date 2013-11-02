@@ -48,6 +48,10 @@ public class MainActivity extends Activity {
                 R.layout.curfewtextview, mToUserList);
         mCurfewListView.setAdapter(mCurfewAdapter);
 
+        //Starting the service
+        startService(new Intent(this, CurfewService.class));
+
+
         //Get username textview
         mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
 
