@@ -36,7 +36,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Curfew"
+        android:text="Save "
         android:id="@+id/setCurfewButton"
         android:layout_below="@+id/timePicker"
         android:layout_alignParentLeft="true"

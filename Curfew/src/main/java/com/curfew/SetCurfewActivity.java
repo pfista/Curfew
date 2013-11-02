@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -18,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class SetCurfewActivity extends Activity {
     private TextView mSetCurfewTextView;
     private TimePicker timePicker;
     private ParseUser mCurrentUser;
+    private Button mSaveButton;
     private String TAG = "com.curfew.MainActivity";
 
     @Override
@@ -39,6 +42,8 @@ public class SetCurfewActivity extends Activity {
         if (mCurrentUser == null) {
             //TODO: go to signin screen
         }
+        mSaveButton = (Button)findViewById(R.id.setCurfewButton);
+
         findViewById(R.id.setCurfewButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,13 +58,16 @@ public class SetCurfewActivity extends Activity {
         ParseQuery toUserQuery = ParseUser.getQuery();
         final ParseUser currentUser = ParseUser.getCurrentUser();
         toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText());
+        mSaveButton.setEnabled(false);
 
         // This should only ever be one user
         toUserQuery.getFirstInBackground(new GetCallback() {
             @Override
             public void done(final ParseObject toUser, ParseException e) {
                 if (toUser == null) {
-                    // TODO: Error
+                    mSetCurfewTextView.setError("Invalid Username");
+                    mSetCurfewTextView.requestFocus();
+                    mSaveButton.setEnabled(true);
                 } else {
                     // The user 'toUser' exists, we can add the curfew now
                     // Check if there is already a curfew for toUser, and retrieve it if so
@@ -88,7 +96,14 @@ public class SetCurfewActivity extends Activity {
                             int minute = timePicker.getCurrentMinute();
                             String dateTime = "" + hour + ":" + minute;
                             curfew.put("Curfew", dateTime);
-                            curfew.saveInBackground();
+                            curfew.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null){
+                                        mSaveButton.setEnabled(true);
+                                    }
+                                }
+                            });
                         }
                     });
                 }
