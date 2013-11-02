@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -25,7 +26,12 @@ public class MainActivity extends Activity {
 
     private TextView mUserNameTextView;
     private String TAG = "com.curfew.MainActivity";
-    public ParseUser mCurrentUser;
+    private ParseUser mCurrentUser;
+
+    protected ArrayList<String> mToUserList;
+    protected ListView mCurfewListView;
+    protected ArrayAdapter mCurfewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,11 @@ public class MainActivity extends Activity {
 
         mCurrentUser = ParseUser.getCurrentUser();
         mUserNameTextView = (TextView) findViewById(R.id.username);
+        mCurfewListView = (ListView) findViewById(R.id.curfewListView);
+        mToUserList = new ArrayList<String>();
+        mCurfewAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, mToUserList);
+        mCurfewListView.setAdapter(mCurfewAdapter);
     }
 
     @Override
@@ -49,21 +60,27 @@ public class MainActivity extends Activity {
             parseQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> curfews, ParseException e) {
                     if (e == null) {
-                        ArrayList<String> toUsersList = new ArrayList<String>();
-
                         for (ParseObject parseObject : curfews) {
                             ParseUser user = (ParseUser) parseObject.get("toUser");
-                            try {
-                                // TODO: Consider fetchIfNeededInBackground
-                                toUsersList.add(user.fetchIfNeeded().getString("username"));
-                            } catch (ParseException e1) {
-                                Log.e(TAG, e1.getMessage());
-                            }
+                            user.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject parseObject, ParseException e) {
+                                    if (e == null) {
+                                        String name = parseObject.getString("username");
+                                        int index = mToUserList.indexOf(name);
+                                        if (index > -1)
+                                            mToUserList.set(index, name);
+                                        else {
+                                            mToUserList.add(name);
+                                        }
+                                        mCurfewAdapter.notifyDataSetChanged();
+                                    } else {
+                                        Log.e(TAG, "Error getting curfew user" + e.getMessage());
+                                    }
+                                }
+                            });
+
                         }
-                        ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),
-                                android.R.layout.simple_list_item_1, toUsersList);
-                        ListView listView = (ListView) findViewById(R.id.curfewListView);
-                        listView.setAdapter(adapter);
                     } else {
                         Log.e(TAG, "Parse error " + e.getMessage());
                     }

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -48,27 +50,51 @@ public class SetCurfewActivity extends Activity {
     }
 
     public void createCurfew() {
-        ParseQuery parseQuery = ParseUser.getQuery();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        parseQuery.whereEqualTo("username", mSetCurfewTextView.getText());
+        ParseQuery toUserQuery = ParseUser.getQuery();
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText());
 
-        try {
-            List<ParseUser> userList = parseQuery.find();
-            if (userList.size() != 1) {
-                Log.d(TAG, "User " + mSetCurfewTextView.getText() + " found " + userList.size() + " copies of the user");
-            } else {
-                ParseObject newCurfew = new ParseObject("Curfew");
-                newCurfew.put("fromUser", currentUser);
-                newCurfew.put("toUser", userList.get(0));
-                int hour = timePicker.getCurrentHour();
-                int minute = timePicker.getCurrentMinute();
-                String dateTime = "" + hour + ":" + minute;
-                newCurfew.put("Curfew", dateTime);
-                newCurfew.save();
+        // This should only ever be one user
+        toUserQuery.getFirstInBackground(new GetCallback() {
+            @Override
+            public void done(final ParseObject toUser, ParseException e) {
+                if (toUser == null) {
+                    // TODO: Error
+                } else {
+                    // The user 'toUser' exists, we can add the curfew now
+                    // Check if there is already a curfew for toUser, and retrieve it if so
+                    ParseQuery curfewQuery = ParseQuery.getQuery("Curfew");
+                    curfewQuery.whereEqualTo("toUser", toUser);
+
+                    curfewQuery.findInBackground(new FindCallback() {
+                        @Override
+                        public void done(List list, ParseException e) {
+                            Log.d(TAG, "User " + mSetCurfewTextView.getText() + " found " + list.size() + " copies of the user");
+
+                            ParseObject curfew;
+
+                            if (list.size() == 0) {
+                                curfew = new ParseObject("Curfew");
+                                Log.i(TAG, "Adding new curfew");
+                            } else {
+                                Log.i(TAG, "Updating existing curfew");
+                                // TODO: we should just be getting the first one rather than a list
+                                curfew = (ParseObject) list.get(0);
+                            }
+                            // Update the new/existing curfew
+                            curfew.put("fromUser", currentUser);
+                            curfew.put("toUser", toUser);
+                            int hour = timePicker.getCurrentHour();
+                            int minute = timePicker.getCurrentMinute();
+                            String dateTime = "" + hour + ":" + minute;
+                            curfew.put("Curfew", dateTime);
+                            curfew.saveInBackground();
+                        }
+                    });
+                }
             }
-        } catch (ParseException e) {
-            Log.d(TAG, "ParseException thrown when finding user: ", e);
-        }
+        });
+
 
     }
 
