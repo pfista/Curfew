@@ -157,8 +157,7 @@ public class LoginActivity extends Activity {
                     Log.e(TAG, "error signing up" + e.toString());
                     if (e.getCode() == ParseException.USERNAME_TAKEN) {
                         mEmailView.setError(getString(R.string.error_register_user_taken));
-                    }
-                    else {
+                    } else {
                         mPasswordView.setError(getString(R.string.error_register));
                     }
                     showProgress(false);
