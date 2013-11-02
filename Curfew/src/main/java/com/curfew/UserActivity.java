@@ -2,15 +2,19 @@ package com.curfew;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -22,6 +26,7 @@ public class UserActivity extends Activity {
     private ParseUser mCurrentUser;
     private ParseObject mFriendCurfew;
     private TextView mCurfewText;
+    private Button mViewMapButton;
 
     public final String TAG = "com.curfew.UserActivity";
 
@@ -34,6 +39,8 @@ public class UserActivity extends Activity {
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendName = (TextView) findViewById(R.id.friend_username);
         mCurfewText = (TextView) findViewById(R.id.label_curfew_time);
+        mViewMapButton = (Button) findViewById(R.id.button_view_location);
+        mViewMapButton.setEnabled(false);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -61,6 +68,24 @@ public class UserActivity extends Activity {
                                 Log.i(TAG, "curfew: " + mFriendCurfew.getString("Curfew"));
                                 mCurfewText.setText("Active Curfew: "
                                         + mFriendCurfew.get("Curfew"));
+
+                                // TODO: makes sure curfew time is valid to view location
+                                mViewMapButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ParseGeoPoint geopoint = mFriend.getParseGeoPoint("location");
+
+                                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                                Uri.parse("geo:0,0?q=" +
+                                                        geopoint.getLatitude() + "," +
+                                                        geopoint.getLongitude() +
+                                                        "(" + mFriendName.getText() + ")"));
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                mViewMapButton.setEnabled(true);
+
                             } else {
                                 Log.e(TAG, "Unable to find curfew" + e.getMessage());
                                 // TODO: error cannot find friend
