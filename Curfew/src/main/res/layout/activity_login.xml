@@ -32,12 +32,14 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/matte">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
+
 
             <EditText
                 android:layout_alignParentTop="true"
@@ -47,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="@string/prompt_user" />
+                android:hint="@string/prompt_user"
+                android:textColor="@color/white"/>
 
             <EditText
                 android:id="@+id/password"
@@ -59,7 +62,8 @@
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
                 android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified" />
+                android:imeOptions="actionUnspecified"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/sign_in_button"
@@ -68,6 +72,7 @@
                 android:layout_below="@id/password"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
+                android:textColor="@color/curfew_blue"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:layout_marginLeft="84dp"
@@ -80,10 +85,18 @@
                 android:layout_marginTop="16dp"
                 android:layout_below="@id/password"
                 android:text="@string/action_register"
+                android:textColor="@color/curfew_blue"
                 android:paddingLeft="26dp"
                 android:paddingRight="26dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_toRightOf="@id/sign_in_button" />
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/cur"
+                android:layout_below="@id/sign_in_button"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"/>
 
 
         </RelativeLayout>

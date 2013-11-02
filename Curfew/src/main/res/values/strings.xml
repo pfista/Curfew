@@ -10,4 +10,8 @@
     <string name="add_curfew">Create Curfew</string>
     <string name="title_activity_set_curfew">Set Curfew</string>
 
+    <color name="matte">#F0404040</color>
+    <color name="white">#FFFFFF</color>
+    <color name="curfew_blue">#6498dd</color>
+
 </resources>
