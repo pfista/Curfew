@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         mCurfewListView = (ListView) findViewById(R.id.curfewListView);
         mToUserList = new ArrayList<String>();
         mCurfewAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, mToUserList);
+                R.layout.curfewtextview, mToUserList);
         mCurfewListView.setAdapter(mCurfewAdapter);
     }
 

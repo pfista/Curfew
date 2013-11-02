@@ -68,6 +68,10 @@ public class SetCurfewActivity extends Activity {
                     mSetCurfewTextView.setError("Invalid Username");
                     mSetCurfewTextView.requestFocus();
                     mSaveButton.setEnabled(true);
+                } else if (toUser.getString("username").equals(currentUser.getString("username"))) {
+                    mSetCurfewTextView.setError("Cannot be yourself");
+                    mSetCurfewTextView.requestFocus();
+                    mSaveButton.setEnabled(true);
                 } else {
                     // The user 'toUser' exists, we can add the curfew now
                     // Check if there is already a curfew for toUser, and retrieve it if so

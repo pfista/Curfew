@@ -26,7 +26,9 @@
         android:layout_alignTop="@+id/profilePicture"
         android:layout_toRightOf="@+id/profilePicture"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textSize="30dp"
+        android:textIsSelectable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,7 +44,6 @@
         android:id="@+id/curfewListView"
         android:layout_below="@id/curfewListLabel"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#202020" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
