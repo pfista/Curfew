@@ -6,26 +6,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
 
     private TextView mUserNameTextView;
-    private TextView mSetCurfewTextView;
-    private TimePicker timePicker;
     private String TAG = "com.curfew.MainActivity";
+    public ParseUser mCurrentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,55 +34,42 @@ public class MainActivity extends Activity {
         Parse.initialize(this, "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs", "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI");
         ParseAnalytics.trackAppOpened(getIntent());
 
-
-        //Get username textview
-        mUserNameTextView = (TextView) findViewById(R.id.userNameTextView);
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if(currentUser != null)
-            mUserNameTextView.setText(currentUser.getUsername());
-        else{
-            //do nothing for now
-        }
-        findViewById(R.id.setCurfewButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSetCurfewTextView = (TextView) findViewById(R.id.editText);
-                timePicker = (TimePicker) findViewById(R.id.timePicker);
-                createCurfew();
-            }
-        });
-
-
-
+        mCurrentUser = ParseUser.getCurrentUser();
+        mUserNameTextView = (TextView) findViewById(R.id.username);
     }
-    public void createCurfew(){
-        ParseObject newCurfew= new ParseObject("Curfew");
-        ParseUser currentUser = ParseUser.getCurrentUser();
 
-        ParseQuery parseQuery = ParseUser.getQuery();
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCurrentUser != null) {
+            mUserNameTextView.setText(mCurrentUser.getUsername());
 
-        parseQuery.whereEqualTo("username", mSetCurfewTextView.getText());
-        ParseRelation fromUserRelation = newCurfew.getRelation("FromUser");
-        fromUserRelation.add(currentUser);
-        //newCurfew.put("FromUser", fromUserRelation);
-        try{
-            List<ParseUser> userList = parseQuery.find();
-            if (userList.size() != 1){
-                Log.d(TAG, "User " + mSetCurfewTextView.getText() + " found " + userList.size() + " copies of the user");}
-            else{
-                ParseRelation toUserRelation = newCurfew.getRelation("ToUser");
-                toUserRelation.add(userList.get(0));
-                int hour = timePicker.getCurrentHour();
-                int minute = timePicker.getCurrentMinute();
-                String dateTime = "" + hour + ":" + minute;
-                newCurfew.put("Curfew", dateTime);
-                newCurfew.save();
-            }
-        }catch(ParseException e){
-           Log.d(TAG, "ParseException thrown when finding user: ", e);
+            ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Curfew");
+            parseQuery.whereEqualTo("fromUser", mCurrentUser);
+            parseQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> curfews, ParseException e) {
+                    if (e == null) {
+                        ArrayList<String> toUsersList = new ArrayList<String>();
+
+                        for (ParseObject parseObject : curfews) {
+                            ParseUser user = (ParseUser) parseObject.get("toUser");
+                            try {
+                                // TODO: Consider fetchIfNeededInBackground
+                                toUsersList.add(user.fetchIfNeeded().getString("username"));
+                            } catch (ParseException e1) {
+                                Log.e(TAG, e1.getMessage());
+                            }
+                        }
+                        ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),
+                                android.R.layout.simple_list_item_1, toUsersList);
+                        ListView listView = (ListView) findViewById(R.id.curfewListView);
+                        listView.setAdapter(adapter);
+                    } else {
+                        Log.e(TAG, "Parse error " + e.getMessage());
+                    }
+                }
+            });
         }
-
     }
 
     @Override
@@ -92,8 +80,8 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_logout:
                 // Destroy this activity
                 ParseUser.logOut();
@@ -101,10 +89,12 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.action_add_curfew:
+                Intent intent2 = new Intent(this, SetCurfewActivity.class);
+                startActivity(intent2);
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 }

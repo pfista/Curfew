@@ -118,7 +118,7 @@ public class LoginActivity extends Activity {
         ParseUser.logInInBackground(mUser, mPassword, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
-                    Log.i(TAG, "Login succesfull");
+                    Log.i(TAG, "Login successfull");
                     startMainActivity();
                     finish();
                 } else {
@@ -155,7 +155,7 @@ public class LoginActivity extends Activity {
                     finish();
                 } else {
                     Log.e(TAG, "error signing up" + e.toString());
-                    if (e.getCode() == ParseException.USERNAME_TAKEN){
+                    if (e.getCode() == ParseException.USERNAME_TAKEN) {
                         mEmailView.setError(getString(R.string.error_register_user_taken));
                     }
                     else {

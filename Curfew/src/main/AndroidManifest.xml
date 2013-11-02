@@ -7,8 +7,10 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="16" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -16,11 +18,10 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.curfew.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name="com.curfew.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.curfew.SetCurfewActivity"
+            android:label="@string/title_activity_set_curfew"></activity>
+
     </application>
 
 </manifest>

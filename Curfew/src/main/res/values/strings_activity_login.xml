@@ -1,5 +1,5 @@
 <resources>
-        <string name="title_activity_login">Sign in</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_user">Username</string>
@@ -18,5 +18,8 @@
 
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="login_progress_register">Registering&#8230;</string>
+
+
+    <string name="title_activity_login">Sign in</string>
 
 </resources>
