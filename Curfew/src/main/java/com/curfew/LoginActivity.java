@@ -110,6 +110,8 @@ public class LoginActivity extends Activity {
         mUser = mEmailView.getText().toString();
         mPassword = mPasswordView.getText().toString();
 
+        if (invalidLoginFields()) return;
+
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
@@ -131,11 +133,27 @@ public class LoginActivity extends Activity {
         });
     }
 
+    private boolean invalidLoginFields() {
+        if (mUser == null || mUser.length() == 0) {
+            mEmailView.setError("Username cannot be blank");
+            mLoginStatusMessageView.requestFocus();
+            return true;
+        }
+        if (mPassword == null || mPassword.length() == 0) {
+            mPasswordView.setError("Password cannot be blank");
+            mLoginStatusMessageView.requestFocus();
+            return true;
+        }
+        return false;
+    }
+
 
     public void attemptRegister() {
         // Store values at the time of the login attempt.
         mUser = mEmailView.getText().toString();
         mPassword = mPasswordView.getText().toString();
+
+        if (invalidLoginFields()) return;
 
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
