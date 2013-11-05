@@ -87,17 +87,14 @@
                 android:layout_gravity="left|center_vertical"
                 android:background="@drawable/custom_button" />
 
-            <RelativeLayout
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent">
 
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:src="@drawable/cur_two"
-                    android:layout_margin="50dp"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
+            <ImageView
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:src="@drawable/curfew"
+                android:scaleType="centerInside" >
+
+                </ImageView>
 
 
         </LinearLayout>
