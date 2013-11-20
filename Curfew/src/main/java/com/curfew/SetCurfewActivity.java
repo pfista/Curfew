@@ -42,7 +42,7 @@ public class SetCurfewActivity extends Activity {
         if (mCurrentUser == null) {
             //TODO: go to signin screen
         }
-        mSaveButton = (Button)findViewById(R.id.setCurfewButton);
+        mSaveButton = (Button) findViewById(R.id.setCurfewButton);
 
         findViewById(R.id.setCurfewButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class SetCurfewActivity extends Activity {
     public void createCurfew() {
         ParseQuery toUserQuery = ParseUser.getQuery();
         final ParseUser currentUser = ParseUser.getCurrentUser();
-        toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText());
+        toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText().toString().toLowerCase());
         mSaveButton.setEnabled(false);
 
         // This should only ever be one user
@@ -103,7 +103,7 @@ public class SetCurfewActivity extends Activity {
                             curfew.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    if (e == null){
+                                    if (e == null) {
                                         mSaveButton.setEnabled(true);
                                     }
                                 }

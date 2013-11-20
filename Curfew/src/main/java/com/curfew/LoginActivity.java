@@ -106,10 +106,6 @@ public class LoginActivity extends Activity {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        // Store values at the time of the login attempt.
-        mUser = mEmailView.getText().toString();
-        mPassword = mPasswordView.getText().toString();
-
         if (invalidLoginFields()) return;
 
         // Show a progress spinner, and kick off a background task to
@@ -125,6 +121,7 @@ public class LoginActivity extends Activity {
                     finish();
                 } else {
                     Log.e(TAG, "Login failed" + e.toString());
+                    // TODO: make a toast here
                     mPasswordView.setError(getString(R.string.error_login));
                     showProgress(false);
                     mPasswordView.requestFocus();
@@ -134,6 +131,10 @@ public class LoginActivity extends Activity {
     }
 
     private boolean invalidLoginFields() {
+        // Store values at the time of the login attempt.
+        mUser = mEmailView.getText().toString().toLowerCase();
+        mPassword = mPasswordView.getText().toString();
+
         if (mUser == null || mUser.length() == 0) {
             mEmailView.setError("Username cannot be blank");
             mLoginStatusMessageView.requestFocus();
@@ -149,10 +150,6 @@ public class LoginActivity extends Activity {
 
 
     public void attemptRegister() {
-        // Store values at the time of the login attempt.
-        mUser = mEmailView.getText().toString();
-        mPassword = mPasswordView.getText().toString();
-
         if (invalidLoginFields()) return;
 
         // Show a progress spinner, and kick off a background task to
