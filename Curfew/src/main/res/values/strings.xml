@@ -18,4 +18,7 @@
     <color name="black">#ff151515</color>
     <color name="semi_trans">#0A000000</color>
 
+    <string name="title_activity_activity_mapview">activity_mapview</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

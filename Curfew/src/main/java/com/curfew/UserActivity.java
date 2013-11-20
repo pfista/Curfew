@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -35,6 +36,8 @@ public class UserActivity extends Activity {
     private boolean pastCurfew;
 
     public final String TAG = "com.curfew.UserActivity";
+    public static final String LAT_LONG = "com.curfew.Lat_Long";
+    public static final String USRNAME = "com.curfew.USR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,33 +83,39 @@ public class UserActivity extends Activity {
                                 int minute = Integer.parseInt(curfewTime.split(":")[1]);
                                 Time curfewTimeObject = new Time();
                                 Calendar c = Calendar.getInstance();
-                                curfewTimeObject.set(0, minute,hour, c.get(Calendar.DAY_OF_MONTH) ,c.get(Calendar.MONTH), c.get(Calendar.YEAR));
+                                curfewTimeObject.set(0, minute, hour, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
                                 Time currTime = new Time();
                                 currTime.setToNow();
-                                if(Time.compare(curfewTimeObject, currTime) < 0){
+                                if (Time.compare(curfewTimeObject, currTime) < 0) {
                                     //Then it is past the curfew and show the location
                                     pastCurfew = true;
-                                }else{
+                                } else {
                                     pastCurfew = false;
                                 }
                                 mViewMapButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         ParseGeoPoint geopoint = mFriend.getParseGeoPoint("location");
-                                        if(pastCurfew && geopoint!=null){
-                                            Intent intent = new Intent(Intent.ACTION_VIEW,
-                                                Uri.parse("geo:0,0?q=" +
-                                                        geopoint.getLatitude() + "," +
-                                                        geopoint.getLongitude() +
-                                                        "(" + mFriendName.getText() + ")"));
-                                            try{
-                                                startActivity(intent);
-                                            }catch(ActivityNotFoundException e){
-                                                Log.d(TAG, "Cannot start maps, Activity not found exception: ", e);
-                                                Toast toast = Toast.makeText(getApplicationContext(), "Cannot start maps application. Maps most likely not installed", Toast.LENGTH_SHORT);
-                                                toast.show();
+                                        if (pastCurfew && geopoint != null) {
+                                            Intent intentNormal = new Intent(Intent.ACTION_VIEW,
+                                                    Uri.parse("geo:0,0?q=" +
+                                                            geopoint.getLatitude() + "," +
+                                                            geopoint.getLongitude() +
+                                                            "(" + mFriendName.getText() + ")"));
+                                            try {
+                                                startActivity(intentNormal);
+                                            } catch (ActivityNotFoundException e) {
+//
+                                                Intent intentAuxillary = new Intent(UserActivity.this, MapViewActivity.class);
+                                                LatLng loc = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
+                                                String usrname = (String) mFriendName.getText();
+                                                intentAuxillary.putExtra("LAT_LONG", loc);
+                                                intentAuxillary.putExtra("USRNAME", usrname);
+                                                startActivity(intentAuxillary);
+
+
                                             }
-                                        }else{
+                                        } else {
                                             //It is not past the curfew so show a toast saying location is not available before curfew
                                             Toast toast = Toast.makeText(getApplicationContext(), "Location not available before curfew", Toast.LENGTH_SHORT);
                                             toast.show();
