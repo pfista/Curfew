@@ -22,6 +22,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -87,6 +88,7 @@ public class MainActivity extends Activity {
                                         else {
                                             mToUserList.add(name);
                                         }
+                                        Collections.sort(mToUserList);
                                         mCurfewAdapter.notifyDataSetChanged();
                                     } else {
                                         Log.e(TAG, "Error getting curfew user" + e.getMessage());
