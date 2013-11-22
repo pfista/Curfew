@@ -36,4 +36,4 @@ local.properties
 *.swp
 
 # Private Keys
-SensitiveKeys
+SensitiveKeys.*
