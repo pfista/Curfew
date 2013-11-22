@@ -34,3 +34,6 @@ local.properties
 *.ipr
 *~
 *.swp
+
+# Private Keys
+SensitiveKeys

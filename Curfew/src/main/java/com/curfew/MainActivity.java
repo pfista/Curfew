@@ -30,8 +30,6 @@ public class MainActivity extends Activity {
     protected ListView mCurfewListView;
     protected ArrayAdapter mCurfewAdapter;
 
-    private final String PARSE_APPLICATION_ID = "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs";
-    private final String PARSE_CLIENT_KEY = "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI";
 
     private ParseQueryAdapter<ParseObject> mCurfewAdapterP;
 
@@ -39,7 +37,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
+        Parse.initialize(this, SensitiveKeys.PARSE_APPLICATION_ID, SensitiveKeys.PARSE_CLIENT_KEY);
         ParseAnalytics.trackAppOpened(getIntent());
 
         mCurrentUser = ParseUser.getCurrentUser();
