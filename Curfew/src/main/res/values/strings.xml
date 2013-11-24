@@ -12,11 +12,18 @@
     <string name="profile_picture_description">Profile Picture</string>
     <string name="username_default">Username</string>
 
-    <color name="matte">#ffeeeeee</color>
+    <color name="matte">#eeeeee</color>
     <color name="white">#FFFFFF</color>
     <color name="curfew_blue">#6498dd</color>
     <color name="black">#ff151515</color>
     <color name="semi_trans">#0A000000</color>
+
+    <!-- Color Scheme -->
+    <color name="blue">#0B2C3C</color>
+    <color name="salmon">#FF6666</color>
+    <color name="grey">#DADFE1</color>
+    <color name="dark_grey">#444444</color>
+
 
     <string name="title_activity_activity_mapview">activity_mapview</string>
     <string name="hello_world">Hello world!</string>
