@@ -3,6 +3,8 @@ package com.curfew;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -11,13 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -33,6 +38,7 @@ public class UserActivity extends Activity {
     private ParseObject mFriendCurfew;
     private TextView mCurfewText;
     private Button mViewMapButton;
+    private ImageView mUserPicture;
     private boolean pastCurfew;
 
     public final String TAG = "com.curfew.UserActivity";
@@ -49,6 +55,7 @@ public class UserActivity extends Activity {
         mFriendName = (TextView) findViewById(R.id.friend_username);
         mCurfewText = (TextView) findViewById(R.id.label_curfew_time);
         mViewMapButton = (Button) findViewById(R.id.button_view_location);
+        mUserPicture = (ImageView) findViewById(R.id.profilePicture);
         mViewMapButton.setEnabled(false);
 
         Intent intent = getIntent();
@@ -64,6 +71,23 @@ public class UserActivity extends Activity {
             public void done(ParseObject parseObject, ParseException e) {
                 if (e == null) {
                     mFriend = (ParseUser) parseObject;
+
+                    // Get the profile picture
+                    ParseFile file = (ParseFile) mFriend.get("profilePicture");
+                    try {
+                        file.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] data, ParseException e) {
+                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                if (data != null)
+                                    mUserPicture.setImageBitmap(bmp);
+
+                            }
+                        });
+                    } catch (Exception a) {
+                        Log.d(TAG, a.toString());
+                    }
+
 
                     // Get the curfew object
                     ParseQuery curfewQuery = ParseQuery.getQuery("Curfew");
@@ -142,6 +166,7 @@ public class UserActivity extends Activity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

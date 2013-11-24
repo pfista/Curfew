@@ -10,10 +10,11 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:id="@+id/profilePicture"
-        android:background="@drawable/user_icon"
+        android:src="@drawable/user_icon"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="11dp"
@@ -34,6 +35,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Username"
         android:id="@+id/username"
+        android:paddingLeft="5dp"
         android:layout_alignTop="@+id/profilePicture"
         android:layout_toRightOf="@+id/profilePicture"
         android:layout_marginTop="11dp" />

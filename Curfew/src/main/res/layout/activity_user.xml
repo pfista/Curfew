@@ -14,7 +14,8 @@
         android:layout_height="125dp"
         android:contentDescription="@string/profile_picture_description"
         android:id="@+id/profilePicture"
-        android:background="@drawable/user_icon"
+        android:scaleType="centerCrop"
+        android:src="@drawable/user_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
 
