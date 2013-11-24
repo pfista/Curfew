@@ -3,6 +3,7 @@
     tools:context=".LoginActivity">
 
     <!-- Login progress -->
+
     <LinearLayout
         android:id="@+id/login_status"
         android:visibility="gone"
@@ -28,76 +29,82 @@
             android:text="@string/login_progress_signing_in" />
     </LinearLayout>
 
+
     <!-- Login form -->
-    <ScrollView
+
+    <LinearLayout
         android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:animateLayoutChanges="true"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:orientation="vertical"
         android:background="@color/matte">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingBottom="10dp"
+            android:text="Sign in to Curfew" />
+
+        <EditText
+            android:layout_alignParentTop="true"
+            android:id="@+id/email"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/prompt_user" />
+
+        <EditText
+            android:id="@+id/password"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword"
+            android:imeActionId="@+id/login"
+            android:imeOptions="actionUnspecified" />
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-
-
-            <EditText
-                android:layout_alignParentTop="true"
-                android:id="@+id/email"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/prompt_user"
-                android:textColor="@color/white" />
-
-            <EditText
-                android:id="@+id/password"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:inputType="textPassword"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-                android:textColor="@color/white" />
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textColor="@color/white"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:layout_gravity="left|center_vertical"
-                android:background="@drawable/custom_button" />
+                android:drawableStart="@drawable/user_circle"
+                android:text="@string/action_sign_in" />
 
             <Button
                 android:id="@+id/register_button"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/action_register"
-                android:textColor="@color/white"
-                android:paddingLeft="26dp"
-                android:paddingRight="26dp"
-                android:layout_gravity="left|center_vertical"
-                android:background="@drawable/custom_button" />
-
-
-            <ImageView
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:src="@drawable/curfew"
-                android:scaleType="centerInside" >
-
-                </ImageView>
-
+                android:drawableStart="@drawable/user_add"
+                android:text="@string/action_register" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/splash" />
+
+
+    </LinearLayout>
+
+
 </merge>

@@ -120,8 +120,8 @@ public class LoginActivity extends Activity {
                     startMainActivity();
                     finish();
                 } else {
-                    Log.e(TAG, "Login failed" + e.toString());
-                    // TODO: make a toast here
+                    Log.e(TAG, "Login failed " + e.toString());
+                    //TODO: Give different errors if not an invalid password or user
                     mPasswordView.setError(getString(R.string.error_login));
                     showProgress(false);
                     mPasswordView.requestFocus();
