@@ -2,6 +2,8 @@ package com.curfew;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,14 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -34,6 +39,7 @@ public class MainActivity extends Activity {
     protected ArrayList<String> mToUserList;
     protected ListView mCurfewListView;
     protected ArrayAdapter mCurfewAdapter;
+    protected ImageView mProfilePicture;
 
 
     @Override
@@ -50,6 +56,7 @@ public class MainActivity extends Activity {
         mCurfewAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.curfewtextview, mToUserList);
         mCurfewListView.setAdapter(mCurfewAdapter);
+        mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
 
         //Starting the service
         startService(new Intent(this, CurfewService.class));
@@ -102,6 +109,20 @@ public class MainActivity extends Activity {
                     }
                 }
             });
+            ParseFile file = (ParseFile)mCurrentUser.get("profilePicture");
+            try{
+                file.getDataInBackground(new GetDataCallback(){
+                    @Override
+                    public void done(byte[] data, ParseException e){
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        if(data!=null)
+                            mProfilePicture.setImageBitmap(bmp);
+
+                    }
+                });
+            }catch(Exception e){
+                Log.d(TAG, e.toString());
+            }
         }
     }
 
@@ -125,6 +146,9 @@ public class MainActivity extends Activity {
             case R.id.action_add_curfew:
                 Intent intent2 = new Intent(this, SetCurfewActivity.class);
                 startActivity(intent2);
+            case R.id.action_profile_settings:
+                Intent intent3 = new Intent(this, ProfileSettingsActivity.class);
+                startActivity(intent3);
             default:
                 return super.onOptionsItemSelected(item);
         }

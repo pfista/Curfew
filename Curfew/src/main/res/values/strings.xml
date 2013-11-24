@@ -20,5 +20,9 @@
 
     <string name="title_activity_activity_mapview">activity_mapview</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
+    <string name="edit_profile_pic_button">Change Picture</string>
+    <string name="title_activity_image_upload">ImageUploadActivity</string>
+    <string name="exception_message">An error has occured</string>
 
 </resources>
