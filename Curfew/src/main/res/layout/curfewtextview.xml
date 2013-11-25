@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/curfewtextview"
-    android:textColor="@color/black"
-    android:textSize="20sp"
-    android:padding="5sp"
-    android:layout_width="fill_parent"
-    android:singleLine="true"
-    android:layout_height="fill_parent" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/curfew_item"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/curfew_item_image"
+        android:layout_width="40sp"
+        android:contentDescription="Curfew Time"
+        android:layout_height="40sp" />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/curfew_item_text"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:padding="5sp"
+        android:layout_width="fill_parent"
+        android:singleLine="true"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>
+

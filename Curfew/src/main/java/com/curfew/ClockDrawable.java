@@ -56,7 +56,7 @@ public class ClockDrawable extends Drawable {
         int smallestSize = Math.min(width, height);
 
         // Draw the outer ring.
-        float dialRadius = smallestSize / 2.1f;
+        float dialRadius = smallestSize / 2.2f;
         canvas.drawCircle(centerX, centerY, dialRadius, mDialPaint);
 
         // Draw the hour hand.
