@@ -24,6 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -41,12 +42,16 @@ public class MainActivity extends Activity {
     protected ArrayAdapter mCurfewAdapter;
     protected ImageView mProfilePicture;
 
+    private final String PARSE_APPLICATION_ID = "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs";
+    private final String PARSE_CLIENT_KEY = "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI";
+
+    private ParseQueryAdapter<ParseObject> mCurfewAdapterP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Parse.initialize(this, "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs", "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI");
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         ParseAnalytics.trackAppOpened(getIntent());
 
         mCurrentUser = ParseUser.getCurrentUser();
@@ -58,8 +63,24 @@ public class MainActivity extends Activity {
         mCurfewListView.setAdapter(mCurfewAdapter);
         mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
 
-        //Starting the service
-        startService(new Intent(this, CurfewService.class));
+        mCurfewAdapterP = new ParseQueryAdapter<ParseObject>(this, new ParseQueryAdapter.QueryFactory<ParseObject>() {
+            @Override
+            public ParseQuery<ParseObject> create() {
+                ParseQuery query = new ParseQuery("User");
+                query.whereEqualTo("fromUser", mCurrentUser);
+                query.orderByAscending("toUser");
+                return query;
+            }
+        });
+        // TODO: These must somehow get at the User object...
+        mCurfewAdapterP.setTextKey("toUser");
+        mCurfewAdapterP.setImageKey("Image");
+        mCurfewAdapterP.setPlaceholder(getResources().getDrawable(R.drawable.placeholder));
+
+
+        // TODO: GUI loading stuff. See parse parsequeryadapter docs
+        mCurfewListView.setAdapter(mCurfewAdapterP);
+
         mCurfewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,6 +90,11 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        //Starting the service
+        startService(new Intent(this, CurfewService.class));
+        // TODO: Provide a way to stop the service
+
     }
 
     @Override

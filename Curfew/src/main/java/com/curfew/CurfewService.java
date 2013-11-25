@@ -12,6 +12,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -42,12 +43,6 @@ public class CurfewService extends Service implements
     // A fast frequency ceiling in milliseconds
     private static final long FASTEST_INTERVAL =
             MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-    /*
-  * Define a request code to send to Google Play services
-  * This code is returned in Activity.onActivityResult
-  */
-    private final static int
-            CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
 
     /* Service extension start */
@@ -70,6 +65,8 @@ public class CurfewService extends Service implements
     @Override
     public void onCreate() {
         super.onCreate();
+        Parse.initialize(this, "OsjvQm4BT1hdH1bkBZ3ljx9T8tbRiLAf1cojknJs", "ah2Y1VCB6MkOplR0YpL9M60Ex2qEhKkISL1ciRdI");
+
         mLocRequest = LocationRequest.create();
         mLocRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
         mLocRequest.setInterval(UPDATE_INTERVAL);
