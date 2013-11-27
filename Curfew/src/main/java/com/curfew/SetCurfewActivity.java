@@ -21,15 +21,19 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 public class SetCurfewActivity extends Activity {
     private TextView mSetCurfewTextView;
+    private TextView mCurfewDateTextView;
     private TimePicker timePicker;
     private ParseUser mCurrentUser;
     private Button mSaveButton;
     private String TAG = "com.curfew.MainActivity";
+    private Date curfewDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,9 @@ public class SetCurfewActivity extends Activity {
                 createCurfew();
             }
         });
+       mCurfewDateTextView= (TextView)findViewById(R.id.curfew_date);
+       Calendar cal = Calendar.getInstance();
+       mCurfewDateTextView.setText(cal.toString());
     }
 
     public void createCurfew() {
@@ -99,6 +106,10 @@ public class SetCurfewActivity extends Activity {
                             int hour = timePicker.getCurrentHour();
                             int minute = timePicker.getCurrentMinute();
                             String dateTime = "" + hour + ":" + minute;
+//                            Date dateTime = new Date();
+//                            Calendar cal = Calendar.getInstance();
+//                            cal.set(Calendar.)
+
                             curfew.put("Curfew", dateTime);
                             curfew.saveInBackground(new SaveCallback() {
                                 @Override
