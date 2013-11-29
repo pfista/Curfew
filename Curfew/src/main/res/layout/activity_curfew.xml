@@ -14,49 +14,49 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/editText"
-        android:layout_alignParentLeft="true"
         android:hint="@string/set_curfew"
-        android:layout_below="@+id/timePicker" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
 
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Curfew"
-        android:id="@+id/textView"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save "
-        android:id="@+id/setCurfewButton"
-        android:layout_below="@+id/dateButton"
         android:layout_alignParentLeft="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dateButton"
-        android:text="Select Date"
-        android:layout_marginTop="99dp"
-        android:layout_below="@+id/timePicker"
-        android:layout_alignParentLeft="true" />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Set Curfew"
+           android:id="@+id/textView"
+           android:layout_below="@+id/editText"
+           android:layout_alignLeft="@+id/editText" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/curfew_date"
-        android:layout_below="@+id/timePicker"
-        android:layout_alignParentLeft="true" />
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Save "
+               android:id="@+id/setCurfewButton"
+               android:layout_below="@+id/dateButton"
+               android:layout_alignParentLeft="true" />
+
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/dateButton"
+               android:text="Change Date"
+               android:layout_below="@+id/curfew_date"
+               android:layout_alignParentLeft="true" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textAppearance="?android:attr/textAppearanceMedium"
+               android:id="@+id/curfew_date"
+               android:layout_below="@+id/timePicker"
+               android:layout_alignParentLeft="true"
+               android:text="mm/dd/yyyy" />
 
 
 </RelativeLayout>

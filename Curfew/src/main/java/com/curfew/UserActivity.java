@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class UserActivity extends Activity {
 
@@ -99,8 +100,15 @@ public class UserActivity extends Activity {
                             if (e == null && parseObject != null) {
                                 mFriendCurfew = parseObject;
                                 Log.i(TAG, "curfew: " + mFriendCurfew.getString("Curfew"));
+                                DateFormat df = new SimpleDateFormat("hh:mm a  E MMMM, dd");
+                                Date dateTime = mFriendCurfew.getDate("Curfew");
+                                String activeCurfew =df.format(dateTime);
+
                                 mCurfewText.setText("Active Curfew: "
-                                        + mFriendCurfew.get("Curfew"));
+                                        + activeCurfew);
+
+
+                                /**
                                 String curfewTime = (String) mFriendCurfew.get("Curfew");
                                 // TODO: makes sure curfew time is valid to view location
                                 int hour = Integer.parseInt(curfewTime.split(":")[0]);
@@ -108,9 +116,11 @@ public class UserActivity extends Activity {
                                 Time curfewTimeObject = new Time();
                                 Calendar c = Calendar.getInstance();
                                 curfewTimeObject.set(0, minute, hour, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
-                                Time currTime = new Time();
-                                currTime.setToNow();
-                                if (Time.compare(curfewTimeObject, currTime) < 0) {
+                                **/
+
+                                Date currTime = new Date();
+
+                                if (currTime.after(dateTime)) {
                                     //Then it is past the curfew and show the location
                                     pastCurfew = true;
                                 } else {
@@ -118,7 +128,7 @@ public class UserActivity extends Activity {
                                 }
                                 mViewMapButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onClick(View v) {
+                                     public void onClick(View v) {
                                         ParseGeoPoint geopoint = mFriend.getParseGeoPoint("location");
                                         if (pastCurfew && geopoint != null) {
                                             Intent intentNormal = new Intent(Intent.ACTION_VIEW,
@@ -135,7 +145,13 @@ public class UserActivity extends Activity {
                                                 String usrname = (String) mFriendName.getText();
                                                 intentAuxillary.putExtra("LAT_LONG", loc);
                                                 intentAuxillary.putExtra("USRNAME", usrname);
+
+                                                try{
                                                 startActivity(intentAuxillary);
+                                                } catch(Exception f){
+                                                    Log.d(TAG, f.toString());
+                                                    Toast toast = Toast.makeText(getApplicationContext(), "Error opening maps", Toast.LENGTH_SHORT);
+                                                }
 
 
                                             }

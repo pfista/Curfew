@@ -13,6 +13,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by pfister on 11/24/13.
  */
@@ -34,7 +38,11 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
             vi = inflater.inflate(R.layout.curfewtextview, null);
         }
 
-        String time = object.getString("Curfew");
+//        String time = object.getString("Curfew");
+        Date dateTime = (Date)object.get("Curfew");
+        DateFormat df = new SimpleDateFormat("hh:mm");
+        String time = df.format(dateTime);
+
         TextView text = (TextView) vi.findViewById(R.id.curfew_item_text);
         ImageView image = (ImageView) vi.findViewById(R.id.curfew_item_image);
 

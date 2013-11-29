@@ -1,8 +1,8 @@
 package com.curfew;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -20,20 +22,23 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
-public class SetCurfewActivity extends Activity {
+public class SetCurfewActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private TextView mSetCurfewTextView;
     private TextView mCurfewDateTextView;
     private TimePicker timePicker;
     private ParseUser mCurrentUser;
     private Button mSaveButton;
     private String TAG = "com.curfew.MainActivity";
-    private Date curfewDate;
+    private Calendar curfewDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,23 @@ public class SetCurfewActivity extends Activity {
         });
        mCurfewDateTextView= (TextView)findViewById(R.id.curfew_date);
        Calendar cal = Calendar.getInstance();
-       mCurfewDateTextView.setText(cal.toString());
+       DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+       mCurfewDateTextView.setText(df.format(cal.getTime()));
+        curfewDate = Calendar.getInstance();
+        final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, curfewDate.get(Calendar.YEAR), curfewDate.get(Calendar.MONTH), curfewDate.get(Calendar.DAY_OF_MONTH), isVibrate());
+
+
+        findViewById(R.id.dateButton).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.setVibrate(isVibrate());
+                datePickerDialog.setYearRange(2011, 2028);
+                datePickerDialog.show(getFragmentManager(), "datepicker");
+            }
+        });
+
+
     }
 
     public void createCurfew() {
@@ -105,12 +126,14 @@ public class SetCurfewActivity extends Activity {
                             curfew.put("toUser", toUser);
                             int hour = timePicker.getCurrentHour();
                             int minute = timePicker.getCurrentMinute();
+                            curfewDate.set(Calendar.HOUR_OF_DAY, hour);
+                            curfewDate.set(Calendar.MINUTE, minute);
                             String dateTime = "" + hour + ":" + minute;
 //                            Date dateTime = new Date();
-//                            Calendar cal = Calendar.getInstance();
+//                            C
 //                            cal.set(Calendar.)
 
-                            curfew.put("Curfew", dateTime);
+                            curfew.put("Curfew", curfewDate.getTime());
                             curfew.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
@@ -150,4 +173,19 @@ public class SetCurfewActivity extends Activity {
         }
     }
 
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
+        Toast.makeText(SetCurfewActivity.this, "new date:" + year + "-" + month + "-" + day, Toast.LENGTH_LONG).show();
+        curfewDate.set(year,month,day);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        mCurfewDateTextView.setText(df.format(curfewDate.getTime()));
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+    }
+    private boolean isVibrate() {
+        return false;
+    }
 }
