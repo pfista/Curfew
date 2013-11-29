@@ -100,13 +100,16 @@ public class UserActivity extends Activity {
                             if (e == null && parseObject != null) {
                                 mFriendCurfew = parseObject;
                                 Log.i(TAG, "curfew: " + mFriendCurfew.getString("Curfew"));
-                                DateFormat df = new SimpleDateFormat("hh:mm a  E MMMM, dd");
+
                                 Date dateTime = mFriendCurfew.getDate("Curfew");
-                                String activeCurfew =df.format(dateTime);
 
-                                mCurfewText.setText("Active Curfew: "
-                                        + activeCurfew);
-
+                                DateFormat dfTime = new SimpleDateFormat("hh:mm a");
+                                DateFormat dfDate = new SimpleDateFormat("EEEE, MMMM dd");
+                                String curfewTime = dfTime.format(dateTime);
+                                String curfewDate = dfDate.format(dateTime);
+                                // TODO make these two separate text views that are clickable and allow
+                                // the user to edit the curfew time and date
+                                mCurfewText.setText(curfewDate + "\n" + curfewTime);
 
                                 /**
                                 String curfewTime = (String) mFriendCurfew.get("Curfew");
@@ -203,6 +206,7 @@ public class UserActivity extends Activity {
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                stopService(new Intent(this, CurfewService.class));
                 finish();
                 return true;
             default:

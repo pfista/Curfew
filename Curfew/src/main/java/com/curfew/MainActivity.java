@@ -79,7 +79,6 @@ public class MainActivity extends Activity {
 
         //Starting the service
         startService(new Intent(this, CurfewService.class));
-        // TODO: Provide a way to stop the service
 
     }
 
@@ -93,9 +92,10 @@ public class MainActivity extends Activity {
                 file.getDataInBackground(new GetDataCallback(){
                     @Override
                     public void done(byte[] data, ParseException e){
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        if(data!=null)
+                        if (data != null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                             mProfilePicture.setImageBitmap(bmp);
+                        }
 
                     }
                 });
@@ -120,6 +120,7 @@ public class MainActivity extends Activity {
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                stopService(new Intent(this, CurfewService.class));
                 finish();
                 return true;
             case R.id.action_add_curfew:

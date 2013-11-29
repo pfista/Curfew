@@ -166,6 +166,7 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                stopService(new Intent(this, CurfewService.class));
                 finish();
                 return true;
             default:
