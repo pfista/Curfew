@@ -37,11 +37,23 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/label_curfew_time"
-        android:id="@+id/label_curfew_time"
+        android:id="@+id/label_curfew_title"
         android:layout_below="@id/profilePicture"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/blue"
+        android:textSize="15sp"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/label_curfew_time"
+        android:layout_below="@id/label_curfew_title"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textIsSelectable="false" />
 
     <Button

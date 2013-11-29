@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="button_view_location">View Location</string>
-    <string name="label_curfew_time">Active Curfew:</string>
+    <string name="label_curfew_time">Active Curfew</string>
 </resources>
