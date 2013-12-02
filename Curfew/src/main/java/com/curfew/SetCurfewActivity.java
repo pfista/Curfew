@@ -55,6 +55,9 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
             //TODO: go to signin screen
         }
 
+        Bundle bundle = getIntent().getExtras();
+
+
         mTimeDisplayTextView = (TextView) findViewById(R.id.time_display);
 
         mTimeDisplayTextView.setText("Choose Curfew Time");
@@ -86,10 +89,15 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
             @Override
             public void onClick(View v) {
                 datePickerDialog.setVibrate(isVibrate());
-                datePickerDialog.setYearRange(2011, 2028);
+                datePickerDialog.setYearRange(2013, 2028);
                 datePickerDialog.show(getFragmentManager(), "datepicker");
             }
         });
+
+        if (bundle != null && bundle.getString("username") != null){
+            mSetCurfewTextView.setText(bundle.getString("username"));
+            mSetCurfewTextView.setEnabled(false);
+        }
 
 
     }
@@ -197,7 +205,7 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
         mImageView.setBackground(cd);
         mTimeDisplayTextView.setText(df.format(curfewDate.getTime()));
 
-        Toast.makeText(SetCurfewActivity.this, "Curfew saved: " + df.format(curfewDate.getTime()), Toast.LENGTH_LONG);
+        Toast.makeText(SetCurfewActivity.this, "Curfew saved: " + df.format(curfewDate.getTime()), Toast.LENGTH_LONG).show();
 
     }
     private boolean isVibrate() {
