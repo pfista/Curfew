@@ -601,7 +601,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                 if (mIsTouchingAmOrPm == AM || mIsTouchingAmOrPm == PM) {
                     // If the touch is on AM or PM, set it as "touched" after the TAP_TIMEOUT
                     // in case the user moves their finger quickly.
-                    tryVibrate();
+
                     mDownDegrees = -1;
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -619,7 +619,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                     if (mDownDegrees != -1) {
                         // If it's a legal touch, set that number as "selected" after the
                         // TAP_TIMEOUT in case the user moves their finger quickly.
-                        tryVibrate();
+
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -674,7 +674,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                 if (degrees != -1) {
                     value = reselectSelector(degrees, isInnerCircle[0], false, true);
                     if (value != mLastValueSelected) {
-                        tryVibrate();
+
                         mLastValueSelected = value;
                         mListener.onValueSelected(getCurrentItemShowing(), value, false);
                     }
@@ -738,14 +738,14 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      * happen if we have vibrated very recently.
      */
     public void tryVibrate() {
-        if (mVibrator != null) {
+/*        if (mVibrator != null) {
             long now = SystemClock.uptimeMillis();
             // We want to try to vibrate each individual tick discretely.
             if (now - mLastVibrate >= 125) {
                 mVibrator.vibrate(5);
                 mLastVibrate = now;
             }
-        }
+        }*/
     }
 
     /**

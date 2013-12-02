@@ -79,7 +79,8 @@ public class CurfewService extends Service implements
     @Override
     public void onDestroy() {
         mLocClient.removeLocationUpdates(this);
-        mLocClient.disconnect();
+        if (mLocClient.isConnected())
+            mLocClient.disconnect();
     }
 
     public void updateWithNewLocation(Location location) {

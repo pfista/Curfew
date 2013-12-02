@@ -16,47 +16,51 @@
         android:id="@+id/editText"
         android:hint="@string/set_curfew"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_centerHorizontal="true" />
 
-    <TimePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true" />
-
-       <TextView
+    <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="Set Curfew"
            android:id="@+id/textView"
-           android:layout_below="@+id/editText"
-           android:layout_alignLeft="@+id/editText" />
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true" />
 
-           <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Save "
-               android:id="@+id/setCurfewButton"
-               android:layout_below="@+id/dateButton"
-               android:layout_alignParentLeft="true" />
-
-           <Button
+    <Button
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:id="@+id/dateButton"
                android:text="Change Date"
-               android:layout_below="@+id/curfew_date"
-               android:layout_alignParentLeft="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp" />
 
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textAppearance="?android:attr/textAppearanceMedium"
                android:id="@+id/curfew_date"
-               android:layout_below="@+id/timePicker"
-               android:layout_alignParentLeft="true"
-               android:text="mm/dd/yyyy" />
+               android:text="mm/dd/yyyy"
+               android:layout_above="@+id/dateButton"
+               android:layout_alignRight="@+id/time_display" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/time_display"
+        android:layout_above="@+id/curfew_date"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/textView"
+        android:layout_above="@+id/time_display"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignLeft="@+id/editText" />
 
 
 </RelativeLayout>
