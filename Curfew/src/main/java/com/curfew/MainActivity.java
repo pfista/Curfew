@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -65,6 +66,19 @@ public class MainActivity extends Activity {
                     }
                 });
 
+        // Perhaps set a callback to be fired upon successful loading of a new set of ParseObjects.
+        mCurfewAdapter.addOnQueryLoadListener(new CurfewQueryAdapter.OnQueryLoadListener<ParseObject>() {
+
+            public void onLoading() {
+                Log.i(TAG, "Started loading");
+            }
+
+            public void onLoaded(List<ParseObject> objects, Exception e) {
+                // Execute any post-loading logic, hide "loading" UI
+                Log.i(TAG, "Done loading");
+            }
+        });
+
         mCurfewListView.setAdapter(mCurfewAdapter);
 
         mCurfewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,6 +99,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        mCurfewAdapter.loadObjects();
         if (mCurrentUser != null) {
             mUserNameTextView.setText(mCurrentUser.getUsername());
             ParseFile file = (ParseFile)mCurrentUser.get("profilePicture");
