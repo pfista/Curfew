@@ -23,16 +23,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
 
     private TextView mUserNameTextView;
-    private String TAG = "com.curfew.MainActivity";
+    private final String TAG = "com.curfew.MainActivity";
+    private final String CURFEW_LIST_CACHE = "com.curfew.list.curfew_list_cache";
     private ParseUser mCurrentUser;
 
-    protected ArrayList<String> mToUserList;
     protected ListView mCurfewListView;
     protected ImageView mProfilePicture;
 
@@ -51,7 +50,6 @@ public class MainActivity extends Activity {
         mCurrentUser = ParseUser.getCurrentUser();
         mUserNameTextView = (TextView) findViewById(R.id.username);
         mCurfewListView = (ListView) findViewById(R.id.curfewListView);
-        mToUserList = new ArrayList<String>();
 
         mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
 
@@ -60,6 +58,7 @@ public class MainActivity extends Activity {
                     @Override
                     public ParseQuery<ParseObject> create() {
                         ParseQuery query = new ParseQuery("Curfew");
+                        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                         query.whereEqualTo("fromUser", mCurrentUser);
                         query.orderByAscending("toUser");
                         return query;

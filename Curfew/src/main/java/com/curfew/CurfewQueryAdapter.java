@@ -1,6 +1,7 @@
 package com.curfew;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,6 @@ import java.util.Date;
 public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
 
     private final String TAG = "com.curfew.adapter";
-
-    private ParseUser mUser;
 
     public CurfewQueryAdapter(Context context, QueryFactory queryFactory) {
         super(context, queryFactory);
@@ -51,9 +50,8 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
         object.getParseUser("toUser").fetchIfNeededInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
-                if (e == null){
-
-                    mUser = (ParseUser)parseObject;
+                if (e == null) {
+                    ParseUser user = (ParseUser) parseObject;
                     int hour = Integer.parseInt(time.split(":")[0]);
                     int minute = Integer.parseInt(time.split(":")[1]);
 
@@ -61,7 +59,7 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
                     ClockDrawable cd = new ClockDrawable(40, R.color.black);
                     cd.setTime(hour, minute, 0);
                     image.setBackground(cd);
-                    text.setText(mUser.getString("username"));
+                    text.setText(user.getString("username"));
                 }
             }
         });
@@ -69,7 +67,4 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
         return vi;
     }
 
-
 }
-
-
