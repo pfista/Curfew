@@ -107,7 +107,7 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
             @Override
             public void done(final ParseObject toUser, ParseException e) {
                 if (toUser == null) {
-                    mSetCurfewTextView.setError("Invalid Username");
+                    mSetCurfewTextView.setError("Please enter username first");
                     mSetCurfewTextView.requestFocus();
 
                 } else if (toUser.getString("username").equals(currentUser.getString("username"))) {
