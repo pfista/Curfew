@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +24,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
     private TextView mUserNameTextView;
-    private String TAG = "com.curfew.MainActivity";
+    private final String TAG = "com.curfew.MainActivity";
+    private final String CURFEW_LIST_CACHE = "com.curfew.list.curfew_list_cache";
     private ParseUser mCurrentUser;
 
-    protected ArrayList<String> mToUserList;
     protected ListView mCurfewListView;
     protected ImageView mProfilePicture;
 
@@ -50,7 +51,6 @@ public class MainActivity extends Activity {
         mCurrentUser = ParseUser.getCurrentUser();
         mUserNameTextView = (TextView) findViewById(R.id.username);
         mCurfewListView = (ListView) findViewById(R.id.curfewListView);
-        mToUserList = new ArrayList<String>();
 
         mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
 
@@ -59,11 +59,25 @@ public class MainActivity extends Activity {
                     @Override
                     public ParseQuery<ParseObject> create() {
                         ParseQuery query = new ParseQuery("Curfew");
+                        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                         query.whereEqualTo("fromUser", mCurrentUser);
                         query.orderByAscending("toUser");
                         return query;
                     }
                 });
+
+        // Perhaps set a callback to be fired upon successful loading of a new set of ParseObjects.
+        mCurfewAdapter.addOnQueryLoadListener(new CurfewQueryAdapter.OnQueryLoadListener<ParseObject>() {
+
+            public void onLoading() {
+                Log.i(TAG, "Started loading");
+            }
+
+            public void onLoaded(List<ParseObject> objects, Exception e) {
+                // Execute any post-loading logic, hide "loading" UI
+                Log.i(TAG, "Done loading");
+            }
+        });
 
         mCurfewListView.setAdapter(mCurfewAdapter);
 
@@ -80,11 +94,14 @@ public class MainActivity extends Activity {
         //Starting the service
         startService(new Intent(this, CurfewService.class));
 
+        registerForContextMenu(mCurfewListView);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mCurfewAdapter.loadObjects();
         if (mCurrentUser != null) {
             mUserNameTextView.setText(mCurrentUser.getUsername());
             ParseFile file = (ParseFile)mCurrentUser.get("profilePicture");
@@ -109,6 +126,40 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        try {
+            // TODO: is there an easier way to do this?
+            menu.setHeaderTitle(mCurfewAdapter.getItem(info.position).getParseUser("toUser").fetchIfNeeded().getString("username"));
+        }
+        catch (ParseException e){
+            Log.e(TAG, e.getMessage());
+        }
+        menu.add("Edit");
+        menu.add("Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        // TODO: switch on options
+        Intent intent = new Intent(this, SetCurfewActivity.class);
+        intent.putExtra("username", item.getTitle());
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        try {
+            // TODO: is there an easier way to do this?
+            intent.putExtra("username", mCurfewAdapter.getItem(info.position).getParseUser("toUser").fetchIfNeeded().getString("username"));
+        }
+        catch (ParseException e){
+            Log.e(TAG, e.getMessage());
+        }
+
+        startActivity(intent);
         return true;
     }
 

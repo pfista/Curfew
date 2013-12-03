@@ -1,6 +1,7 @@
 package com.curfew;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQueryAdapter;
@@ -38,36 +40,31 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
             vi = inflater.inflate(R.layout.curfewtextview, null);
         }
 
-//        String time = object.getString("Curfew");
         Date dateTime = (Date)object.get("Curfew");
         DateFormat df = new SimpleDateFormat("hh:mm");
-        String time = df.format(dateTime);
 
-        TextView text = (TextView) vi.findViewById(R.id.curfew_item_text);
-        ImageView image = (ImageView) vi.findViewById(R.id.curfew_item_image);
+        final String time = df.format(dateTime);
+        final TextView text = (TextView) vi.findViewById(R.id.curfew_item_text);
+        final ImageView image = (ImageView) vi.findViewById(R.id.curfew_item_image);
 
-        ParseUser user = null;
-        try {
-            user = object.getParseUser("toUser").fetchIfNeeded();
-        } catch (ParseException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        object.getParseUser("toUser").fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null) {
+                    ParseUser user = (ParseUser) parseObject;
+                    int hour = Integer.parseInt(time.split(":")[0]);
+                    int minute = Integer.parseInt(time.split(":")[1]);
 
-        String username = user.getString("username");
-
-        int hour = Integer.parseInt(time.split(":")[0]);
-        int minute = Integer.parseInt(time.split(":")[1]);
-
-        // TODO: create appropriate clock drawables here
-        ClockDrawable cd = new ClockDrawable(40, R.color.black);
-        cd.setTime(hour, minute, 0);
-        image.setBackground(cd);
-        text.setText(username);
+                    // Create appropriate clock drawables here
+                    ClockDrawable cd = new ClockDrawable(40, R.color.black);
+                    cd.setTime(hour, minute, 0);
+                    image.setBackground(cd);
+                    text.setText(user.getString("username"));
+                }
+            }
+        });
 
         return vi;
     }
 
-
 }
-
-

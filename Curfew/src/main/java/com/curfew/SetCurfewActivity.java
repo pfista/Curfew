@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AnalogClock;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -34,11 +34,14 @@ import java.util.List;
 public class SetCurfewActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private TextView mSetCurfewTextView;
     private TextView mCurfewDateTextView;
-    private TimePicker timePicker;
+    private TextView mTimeDisplayTextView;
+    private AnalogClock mAnalogClock;
     private ParseUser mCurrentUser;
-    private Button mSaveButton;
-    private String TAG = "com.curfew.MainActivity";
+    private String TAG = "com.curfew.SetCurfewActivity";
     private Calendar curfewDate;
+    private ImageView mImageView;
+    private ClockDrawable cd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +54,28 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
         if (mCurrentUser == null) {
             //TODO: go to signin screen
         }
-        mSaveButton = (Button) findViewById(R.id.setCurfewButton);
 
-        findViewById(R.id.setCurfewButton).setOnClickListener(new View.OnClickListener() {
+        Bundle bundle = getIntent().getExtras();
+
+
+        mTimeDisplayTextView = (TextView) findViewById(R.id.time_display);
+
+        mTimeDisplayTextView.setText("Choose Curfew Time");
+        mSetCurfewTextView = (TextView) findViewById(R.id.editText);
+        mImageView = (ImageView) findViewById(R.id.imageView);
+        cd = new ClockDrawable(100, R.color.black);
+        cd.setTime(0,0,0);
+        mImageView.setBackground(cd);
+
+        final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, 11, 0,isVibrate());
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mSetCurfewTextView = (TextView) findViewById(R.id.editText);
-                timePicker = (TimePicker) findViewById(R.id.timePicker);
-                createCurfew();
+            public void onClick(View v) {
+                timePickerDialog.show(getFragmentManager(), "timepicker");
             }
         });
+
+
        mCurfewDateTextView= (TextView)findViewById(R.id.curfew_date);
        Calendar cal = Calendar.getInstance();
        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -74,10 +89,15 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
             @Override
             public void onClick(View v) {
                 datePickerDialog.setVibrate(isVibrate());
-                datePickerDialog.setYearRange(2011, 2028);
+                datePickerDialog.setYearRange(2013, 2028);
                 datePickerDialog.show(getFragmentManager(), "datepicker");
             }
         });
+
+        if (bundle != null && bundle.getString("username") != null){
+            mSetCurfewTextView.setText(bundle.getString("username"));
+            mSetCurfewTextView.setEnabled(false);
+        }
 
 
     }
@@ -86,7 +106,6 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
         ParseQuery toUserQuery = ParseUser.getQuery();
         final ParseUser currentUser = ParseUser.getCurrentUser();
         toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText().toString().toLowerCase());
-        mSaveButton.setEnabled(false);
 
         // This should only ever be one user
         toUserQuery.getFirstInBackground(new GetCallback() {
@@ -95,11 +114,11 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
                 if (toUser == null) {
                     mSetCurfewTextView.setError("Invalid Username");
                     mSetCurfewTextView.requestFocus();
-                    mSaveButton.setEnabled(true);
+
                 } else if (toUser.getString("username").equals(currentUser.getString("username"))) {
                     mSetCurfewTextView.setError("Cannot be yourself");
                     mSetCurfewTextView.requestFocus();
-                    mSaveButton.setEnabled(true);
+
                 } else {
                     // The user 'toUser' exists, we can add the curfew now
                     // Check if there is already a curfew for toUser, and retrieve it if so
@@ -124,21 +143,13 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
                             // Update the new/existing curfew
                             curfew.put("fromUser", currentUser);
                             curfew.put("toUser", toUser);
-                            int hour = timePicker.getCurrentHour();
-                            int minute = timePicker.getCurrentMinute();
-                            curfewDate.set(Calendar.HOUR_OF_DAY, hour);
-                            curfewDate.set(Calendar.MINUTE, minute);
-                            String dateTime = "" + hour + ":" + minute;
-//                            Date dateTime = new Date();
-//                            C
-//                            cal.set(Calendar.)
 
                             curfew.put("Curfew", curfewDate.getTime());
                             curfew.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
                                     if (e == null) {
-                                        mSaveButton.setEnabled(true);
+
                                     }
                                 }
                             });
@@ -154,7 +165,7 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.set_curfew, menu);
         return true;
     }
 
@@ -176,14 +187,25 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
-        Toast.makeText(SetCurfewActivity.this, "new date:" + year + "-" + month + "-" + day, Toast.LENGTH_LONG).show();
-        curfewDate.set(year,month,day);
+        curfewDate.set(year, month, day);
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         mCurfewDateTextView.setText(df.format(curfewDate.getTime()));
+        createCurfew();
+        Toast.makeText(SetCurfewActivity.this, "Curfew date updated", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+        curfewDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        curfewDate.set(Calendar.MINUTE, minute);
+        createCurfew();
+        DateFormat df = new SimpleDateFormat("hh:mm a");
+        cd.setTime(curfewDate.get(Calendar.HOUR), minute, 0);
+        mImageView.setBackground(cd);
+        mTimeDisplayTextView.setText(df.format(curfewDate.getTime()));
+
+        Toast.makeText(SetCurfewActivity.this, "Curfew saved: " + df.format(curfewDate.getTime()), Toast.LENGTH_LONG).show();
 
     }
     private boolean isVibrate() {

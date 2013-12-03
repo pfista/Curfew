@@ -16,11 +16,10 @@ package com.sleepbot.datetimepicker.time;
  */
 
 import android.app.ActionBar.LayoutParams;
-import android.graphics.Rect;
-import android.os.Build;
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.TransformationMethod;
 import android.util.Log;
@@ -45,7 +44,7 @@ import java.util.Locale;
 /**
  * Dialog to set a time.
  */
-public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
+public class TimePickerDialog extends android.app.DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
     private static final String TAG = "TimePickerDialog";
 
     private static final String KEY_HOUR_OF_DAY = "hour_of_day";
