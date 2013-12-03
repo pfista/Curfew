@@ -114,14 +114,14 @@ public class UserActivity extends Activity {
                                 mCurfewText.setText(curfewDate + "\n" + curfewTime);
 
                                 /**
-                                String curfewTime = (String) mFriendCurfew.get("Curfew");
-                                // TODO: makes sure curfew time is valid to view location
-                                int hour = Integer.parseInt(curfewTime.split(":")[0]);
-                                int minute = Integer.parseInt(curfewTime.split(":")[1]);
-                                Time curfewTimeObject = new Time();
-                                Calendar c = Calendar.getInstance();
-                                curfewTimeObject.set(0, minute, hour, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
-                                **/
+                                 String curfewTime = (String) mFriendCurfew.get("Curfew");
+                                 // TODO: makes sure curfew time is valid to view location
+                                 int hour = Integer.parseInt(curfewTime.split(":")[0]);
+                                 int minute = Integer.parseInt(curfewTime.split(":")[1]);
+                                 Time curfewTimeObject = new Time();
+                                 Calendar c = Calendar.getInstance();
+                                 curfewTimeObject.set(0, minute, hour, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
+                                 **/
 
                                 Date currTime = new Date();
 
@@ -133,7 +133,7 @@ public class UserActivity extends Activity {
                                 }
                                 mViewMapButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                     public void onClick(View v) {
+                                    public void onClick(View v) {
                                         ParseGeoPoint geopoint = mFriend.getParseGeoPoint("location");
                                         if (pastCurfew && geopoint != null) {
                                             Intent intentNormal = new Intent(Intent.ACTION_VIEW,
@@ -144,16 +144,16 @@ public class UserActivity extends Activity {
                                             try {
                                                 startActivity(intentNormal);
                                             } catch (ActivityNotFoundException e) {
-//
+
                                                 Intent intentAuxillary = new Intent(UserActivity.this, MapViewActivity.class);
                                                 LatLng loc = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
                                                 String usrname = (String) mFriendName.getText();
                                                 intentAuxillary.putExtra("LAT_LONG", loc);
                                                 intentAuxillary.putExtra("USRNAME", usrname);
 
-                                                try{
-                                                startActivity(intentAuxillary);
-                                                } catch(Exception f){
+                                                try {
+                                                    startActivity(intentAuxillary);
+                                                } catch (Exception f) {
                                                     Log.d(TAG, f.toString());
                                                     Toast toast = Toast.makeText(getApplicationContext(), "Error opening maps", Toast.LENGTH_SHORT);
                                                 }
@@ -167,7 +167,9 @@ public class UserActivity extends Activity {
                                         }
 
                                     }
-                                });
+                                }
+
+                                );
 
                                 mViewMapButton.setEnabled(true);
 
@@ -176,14 +178,18 @@ public class UserActivity extends Activity {
                                 // TODO: error cannot find friend
                             }
                         }
-                    });
+                    }
+
+                    );
                 } else {
 
                     Log.e(TAG, "Unable to find friend" + e.getMessage());
                     // TODO: error
                 }
             }
-        });
+        }
+
+        );
 
 
     }
