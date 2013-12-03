@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AnalogClock;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +34,6 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
     private TextView mSetCurfewTextView;
     private TextView mCurfewDateTextView;
     private TextView mTimeDisplayTextView;
-    private AnalogClock mAnalogClock;
     private ParseUser mCurrentUser;
     private String TAG = "com.curfew.SetCurfewActivity";
     private Calendar curfewDate;
@@ -109,7 +107,7 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
             @Override
             public void done(final ParseObject toUser, ParseException e) {
                 if (toUser == null) {
-                    mSetCurfewTextView.setError("Invalid Username");
+                    mSetCurfewTextView.setError("Please enter username first");
                     mSetCurfewTextView.requestFocus();
 
                 } else if (toUser.getString("username").equals(currentUser.getString("username"))) {
