@@ -9,6 +9,7 @@
         android:title="@string/add_curfew" />
     <item
         android:id="@+id/action_profile_settings"
+        android:icon="@drawable/cog"
         android:title="Edit Profile"
         android:showAsAction="always"/>
 </menu>

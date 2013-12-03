@@ -147,20 +147,27 @@ public class MainActivity extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         // TODO: switch on options
-        Intent intent = new Intent(this, SetCurfewActivity.class);
-        intent.putExtra("username", item.getTitle());
+        if (item.getTitle().toString().equals("Edit")){
+            Intent intent = new Intent(this, SetCurfewActivity.class);
+            intent.putExtra("username", item.getTitle());
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        try {
-            // TODO: is there an easier way to do this?
-            intent.putExtra("username", mCurfewAdapter.getItem(info.position).getParseUser("toUser").fetchIfNeeded().getString("username"));
-        }
-        catch (ParseException e){
-            Log.e(TAG, e.getMessage());
-        }
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+            try {
+                // TODO: is there an easier way to do this?
+                intent.putExtra("username", mCurfewAdapter.getItem(info.position).getParseUser("toUser").fetchIfNeeded().getString("username"));
+            }
+            catch (ParseException e){
+                Log.e(TAG, e.getMessage());
+            }
 
-        startActivity(intent);
-        return true;
+            startActivity(intent);
+            return true;
+        }
+        else if (item.getTitle().toString().equals("Delete")){
+            // TODO: Delete the curfew
+            return true;
+        }
+        return false;
     }
 
     @Override
