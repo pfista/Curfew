@@ -1,6 +1,7 @@
 package com.curfew;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -138,24 +139,25 @@ public class UserActivity extends Activity {
                                                             geopoint.getLatitude() + "," +
                                                             geopoint.getLongitude() +
                                                             "(" + mFriendName.getText() + ")"));
-//                                            try {
-//                                                startActivity(intentNormal);
-//                                            } catch (ActivityNotFoundException e) {
-
-                                            Intent intentAuxillary = new Intent(UserActivity.this, MapViewActivity.class);
-                                            LatLng loc = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
-                                            String usrname = (String) mFriendName.getText();
-                                            intentAuxillary.putExtra("LAT_LONG", loc);
-                                            intentAuxillary.putExtra("USRNAME", usrname);
-
                                             try {
-                                                startActivity(intentAuxillary);
-                                            } catch (Exception f) {
-                                                Log.d(TAG, f.toString());
-                                                Toast toast = Toast.makeText(getApplicationContext(), "Error opening maps", Toast.LENGTH_SHORT);
+                                                startActivity(intentNormal);
+                                            } catch (ActivityNotFoundException e) {
+
+                                                Intent intentAuxillary = new Intent(UserActivity.this, MapViewActivity.class);
+                                                LatLng loc = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
+                                                String usrname = (String) mFriendName.getText();
+                                                intentAuxillary.putExtra("LAT_LONG", loc);
+                                                intentAuxillary.putExtra("USRNAME", usrname);
+
+                                                try {
+                                                    startActivity(intentAuxillary);
+                                                } catch (Exception f) {
+                                                    Log.d(TAG, f.toString());
+                                                    Toast toast = Toast.makeText(getApplicationContext(), "Error opening maps", Toast.LENGTH_SHORT);
+                                                }
+
+
                                             }
-
-
                                         } else {
                                             //It is not past the curfew so show a toast saying location is not available before curfew
                                             Toast toast = Toast.makeText(getApplicationContext(), "Location not available before curfew", Toast.LENGTH_SHORT);
@@ -163,7 +165,9 @@ public class UserActivity extends Activity {
                                         }
 
                                     }
-                                });
+                                }
+
+                                );
 
                                 mViewMapButton.setEnabled(true);
 
@@ -172,14 +176,18 @@ public class UserActivity extends Activity {
                                 // TODO: error cannot find friend
                             }
                         }
-                    });
+                    }
+
+                    );
                 } else {
 
                     Log.e(TAG, "Unable to find friend" + e.getMessage());
                     // TODO: error
                 }
             }
-        });
+        }
+
+        );
 
 
     }
