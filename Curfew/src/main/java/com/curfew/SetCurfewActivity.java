@@ -99,8 +99,10 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
 
     public void createCurfew() {
         ParseQuery toUserQuery = ParseUser.getQuery();
-        final ParseUser currentUser = ParseUser.getCurrentUser();
+        toUserQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         toUserQuery.whereEqualTo("username", mSetCurfewTextView.getText().toString().toLowerCase());
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+
 
         // This should only ever be one user
         toUserQuery.getFirstInBackground(new GetCallback() {
@@ -143,8 +145,8 @@ public class SetCurfewActivity extends FragmentActivity implements DatePickerDia
                             curfew.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    if (e == null) {
-
+                                    if (e != null) {
+                                        Log.e(TAG, e.getMessage());
                                     }
                                 }
                             });

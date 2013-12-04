@@ -93,7 +93,7 @@ public class UserActivity extends Activity {
 
                     // Get the curfew object
                     ParseQuery curfewQuery = ParseQuery.getQuery("Curfew");
-                    curfewQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                    curfewQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                     curfewQuery.whereEqualTo("toUser", mFriend);
                     curfewQuery.whereEqualTo("fromUser", mCurrentUser);
                     curfewQuery.getFirstInBackground(new GetCallback() {
