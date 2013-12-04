@@ -1,8 +1,6 @@
 package com.curfew;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,15 +30,13 @@ public class CurfewQueryAdapter<T> extends ParseQueryAdapter {
 
     @Override
     public View getItemView(ParseObject object, View v, ViewGroup parent) {
-
-        Log.d("ADAPTER", "in item view");
         View vi = v;
         if (vi == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vi = inflater.inflate(R.layout.curfewtextview, null);
         }
 
-        Date dateTime = (Date)object.get("Curfew");
+        Date dateTime = (Date) object.get("Curfew");
         DateFormat df = new SimpleDateFormat("hh:mm");
 
         final String time = df.format(dateTime);
